@@ -1,13 +1,32 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="utf-8"/>
     <title>Список задач</title>
-
+    <link href="{% static 'style.css' %}" rel="stylesheet">
 </head>
+
+<!-- Шапка-->
+<header>
+    <h1>Список задач</h1>
+</header>
+
+<!--Контент страницы -->
 <body>
 
-<a href="/add">Добавить</a>
+
+<div class="content">
+    <div>
+        <h3>Сегодня</h3>
+        {% for task in tasks %}
+        <li>{{task}}</li>
+        {% endfor %}
+    </div>
+</div>
 
 </body>
+<a href="/add">Добавить</a>
+<!-- Подвал-->
+<footer>Здесь могла бы быть ваша реклама</footer>
 </html>
