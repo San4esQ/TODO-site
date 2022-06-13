@@ -1,13 +1,25 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="utf-8"/>
     <title>Список задач</title>
+    <link href="{% static 'style.css' %}" rel="stylesheet">
 
 </head>
 <body>
 
 <a href="/add">Добавить</a>
+<h2>Задачи на сегодня</h2>
+
+<!-- Задачи-->
+<div>
+    <ul>
+        <li>1) 8:00 | Покушать</li>
+        <li>2) 8:00 | Покушать</li>
+        <li>3) 8:00 | Покушать</li>
+    </ul>
+</div>
 
 </body>
 </html>
