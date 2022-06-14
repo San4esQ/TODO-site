@@ -8,10 +8,10 @@ from firstapp.models import Task
 def index(request):
     tasks = Task.objects.all()
 
-    result = []
+    result = {}
 
     for task in tasks:
-        result.append(task.title)
+        result[task.date] = task.title
 
     return render(request, "index.html", context={"tasks": result})
 
