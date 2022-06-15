@@ -5,6 +5,18 @@
     <title>Добавить задачу</title>
 </head>
 <body>
-    Тут будет добавить время и задачу
+    <form method="POST">
+        {% csrf_token %}
+    <h3>Добавить задачу</h3>
+        <table>
+<!-- Календарь виджет           <p>Выберите дату: <input type="date" name="calendar">-->
+            {{form}}
+<!--            <input type="submit" value="Отправить"></p>-->
+<!--            <p>Время:</p>-->
+<!--            <p>Задача:</p>-->
+        </table>
+        <input type = "submit" value="Добавить">
+        </form>
 </body>
+<a href="/index">Вернуться на главную</a>
 </html>

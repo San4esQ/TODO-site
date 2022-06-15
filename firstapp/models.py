@@ -5,4 +5,5 @@ class Task(models.Model):
     objects = models.Manager()
 
     title = models.CharField(max_length=255)
-    date = models.DateTimeField()
+    date = models.DateField()
+    time = models.TimeField()
