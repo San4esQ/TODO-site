@@ -38,7 +38,7 @@ def add(request):
 
     return render(request, "add.html", {"form": userTask})
 
-def view(request, num = 1):
+def detail(request, num = 1):
     task = Task.objects.get(id = num)
     return render(request, "detail.html", context={"data": task})
 
@@ -51,3 +51,9 @@ def edit(request, num = 1):
         task.save()
         return HttpResponseRedirect("/index")
     return render(request, "edit.html", context={"edit": task})
+
+def delete(request, num = 1):
+    task = Task.objects.get(id = num)
+    task.delete()
+
+    return HttpResponseRedirect("/index")
