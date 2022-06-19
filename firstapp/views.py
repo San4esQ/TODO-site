@@ -12,7 +12,9 @@ def index(request):
     result = {}
 
     for task in tasks:
-        result[task.date] = task.title  # в дальнейшем изменить вывод по времени( сортировать задачи по времени)
+        key = task.date
+
+        result.setdefault(key, []).append(task)
 
     return render(request, "index.html", context={"tasks": result})
 
