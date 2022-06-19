@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение задачи: {{edit.title}}</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <h3>Изменение задачи: {{edit.title}}</h3>
+        <table>
+            Введите дату:
+            <input type = "text" name = "date" value="{{task.date}}">
+
+            Введите время:
+            <input type = "text" name = "time" value="{{task.time}}">
+
+            Введите новую задачу:
+            <input type = "text" name = "title" value="{{task.title}}">
+        </table>
+
+        <input type="submit" value="Изменить" >
+    </form>
+ <a href="/index">Вернуться в главное меню</a>
+
+</body>
+</html>
