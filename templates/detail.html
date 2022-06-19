@@ -5,9 +5,10 @@
     <title>Просмотр задачи: {{data.title}}</title>
 </head>
 <body>
-
-    <h1>{{data.title}}</h1>
+    <p>{{data.title}}</p>
     <p>{{data.date}}</p>
     <p>{{data.time}}</p>
+    <a href="edit/{{data.id}}">Изменить задачу</a>
+    <a href="del/{{data.id}}">Удалить задачу</a>
 </body>
 </html>

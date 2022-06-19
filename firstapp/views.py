@@ -38,6 +38,16 @@ def add(request):
 
     return render(request, "add.html", {"form": userTask})
 
-def update(request, num = 1):
+def view(request, num = 1):
     task = Task.objects.get(id = num)
     return render(request, "detail.html", context={"data": task})
+
+def edit(request, num = 1):
+    task = Task.objects.get(id = num)
+    if request.method == "POST":
+        task.date = request.POST.get("date")
+        task.time = request.POST.get("time")
+        task.title = request.POST.get("title")
+        task.save()
+        return HttpResponseRedirect("/index")
+    return render(request, "edit.html", context={"edit": task})
