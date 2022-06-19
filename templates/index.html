@@ -17,12 +17,14 @@
 
 
 <div class="content">
+    {% for date, task in tasks.items %}
     <div>
-        <h3>Сегодня</h3>
-        {% for date, title in tasks.items %}
-        <li>{{ date|date:"d M, Y" }} : {{title}}</li>
+        <h3>{{ date }}</h3>
+        {% for value in task %}
+        <li><a href="{{value.id}}">{{ value.time }} : {{value.title}}</a></li>
         {% endfor %}
     </div>
+    {% endfor %}
 </div>
 
 </body>
