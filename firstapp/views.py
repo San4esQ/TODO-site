@@ -37,3 +37,7 @@ def add(request):
             return HttpResponseRedirect("/index")
 
     return render(request, "add.html", {"form": userTask})
+
+def update(request, num = 1):
+    task = Task.objects.get(id = num)
+    return render(request, "detail.html", context={"data": task})

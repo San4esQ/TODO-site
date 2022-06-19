@@ -21,7 +21,7 @@
     <div>
         <h3>{{ date }}</h3>
         {% for value in task %}
-        <li>{{ value.time }} : {{value.title}}</li>
+        <li><a href="{{value.id}}">{{ value.time }} : {{value.title}}</a></li>
         {% endfor %}
     </div>
     {% endfor %}

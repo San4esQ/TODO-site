@@ -5,4 +5,5 @@ urlpatterns = [
 
     path('index/', views.index),
     path('add/', views.add),
+    path('index/<int:num>', views.update),
 ]
