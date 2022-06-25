@@ -1,9 +1,13 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from firstapp.models import Task
+from firstapp.models import Task, Users
 
-from .forms import UserTask
+from .forms import UserTask, UserLogin
+
+
+def preview(request):
+    return render(request, "preview.html")
 
 
 def index(request):
@@ -38,12 +42,14 @@ def add(request):
 
     return render(request, "add.html", {"form": userTask})
 
-def detail(request, num = 1):
-    task = Task.objects.get(id = num)
+
+def detail(request, num=1):
+    task = Task.objects.get(id=num)
     return render(request, "detail.html", context={"data": task})
 
-def edit(request, num = 1):
-    task = Task.objects.get(id = num)
+
+def edit(request, num=1):
+    task = Task.objects.get(id=num)
     if request.method == "POST":
         task.date = request.POST.get("date")
         task.time = request.POST.get("time")
@@ -52,8 +58,25 @@ def edit(request, num = 1):
         return HttpResponseRedirect("/index")
     return render(request, "edit.html", context={"edit": task})
 
-def delete(request, num = 1):
-    task = Task.objects.get(id = num)
+
+def delete(request, num=1):
+    task = Task.objects.get(id=num)
     task.delete()
 
     return HttpResponseRedirect("/index")
+
+
+def register(requset):
+    users = UserLogin()
+    if requset.method == "POST":
+        users = UserLogin(requset.POST)
+        if users.is_valid():
+            usernameAdd = users.cleaned_data['usernameAdd']
+            passwordAdd = users.cleaned_data['passwordAdd']
+            value_for_update = {"username": usernameAdd, "password": passwordAdd}
+
+            # добавление нового пользователя в БД
+            newUser = Users.objects.update_or_create(defaults=value_for_update, id=None)
+            return HttpResponseRedirect("/index")
+    return render(requset, "register.html", {"register": users})
+
