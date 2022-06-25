@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+    <h3>Вход</h3>
+        <label>
+            <input type="text" placeholder="Логин" name="login">
+        </label>
+
+        <label >
+            <input type="password" placeholder="Пароль" name="password" >
+        </label>
+
+        <input type = "submit" value="Войти">
+        </form>
+</body>
+</html>
