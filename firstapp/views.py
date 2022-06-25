@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 
 from firstapp.models import Task, Users
@@ -80,3 +80,18 @@ def register(requset):
             return HttpResponseRedirect("/index")
     return render(requset, "register.html", {"register": users})
 
+
+def entry(request):
+    if request.method == "POST":
+        # Получаем с фронта данные на бэк
+        login = request.POST.get('login')
+        password = request.POST.get('password')
+
+        try:
+            user = Users.objects.get(username=login, password=password)
+            return HttpResponseRedirect('/index')
+        # если данных в БД нет то редирект на вход
+        except BaseException:
+            return HttpResponseRedirect('/entry')
+
+    return render(request, "entry.html")
