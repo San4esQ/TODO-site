@@ -5,6 +5,21 @@ from firstapp.models import Task, Users
 
 from .forms import UserTask, UserLogin
 
+from django.contrib.auth import authenticate
+
+
+# тест auth
+
+def test(requset):
+    user = authenticate(username='root', password='1234')
+    if user is not None:
+        return HttpResponseRedirect('/index')
+    else:
+        return HttpResponse('NO')
+
+
+
+
 
 def preview(request):
     return render(request, "preview.html")
@@ -36,8 +51,11 @@ def add(request):
             # значения для добавления взятые выше
             value_for_update = {"title": taskAdd, "date": dateAdd, "time": timeAdd}
 
+            # беру id из внешнего ключа
+            newUser = Users.objects.get(id=17)
+
             # добавление новой задачи даты и время
-            newTask = Task.objects.update_or_create(defaults=value_for_update, id=None)
+            newTask = Task.objects.update_or_create(defaults=value_for_update, id=None, user=newUser)
             return HttpResponseRedirect("/index")
 
     return render(request, "add.html", {"form": userTask})
