@@ -12,4 +12,5 @@ urlpatterns = [
     path('index/<int:num>', views.detail),
     path('index/edit/<int:num>', views.edit),
     path('index/delete/<int:num>', views.delete),
+    path('test/', views.test),
 ]
