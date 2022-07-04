@@ -1,28 +1,11 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
-from firstapp.models import Task, Users
-
-from .forms import UserTask, UserLogin
-
+from django.contrib import auth
+from django.contrib.auth.forms import UserCreationForm
+from django.views.decorators.csrf import csrf_exempt
+from firstapp.models import Task
+from .forms import UserTask
 from django.contrib.auth import authenticate
-
-
-# тест auth
-
-def test(requset):
-    user = authenticate(username='root', password='1234')
-    if user is not None:
-        return HttpResponseRedirect('/index')
-    else:
-        return HttpResponse('NO')
-
-
-
-
-
-def preview(request):
-    return render(request, "preview.html")
 
 
 def index(request):
@@ -51,12 +34,9 @@ def add(request):
             # значения для добавления взятые выше
             value_for_update = {"title": taskAdd, "date": dateAdd, "time": timeAdd}
 
-            # беру id из внешнего ключа
-            newUser = Users.objects.get(id=17)
-
             # добавление новой задачи даты и время
-            newTask = Task.objects.update_or_create(defaults=value_for_update, id=None, user=newUser)
-            return HttpResponseRedirect("/index")
+            newTask = Task.objects.update_or_create(defaults=value_for_update, id=None)
+            return HttpResponseRedirect("/")
 
     return render(request, "add.html", {"form": userTask})
 
@@ -73,7 +53,7 @@ def edit(request, num=1):
         task.time = request.POST.get("time")
         task.title = request.POST.get("title")
         task.save()
-        return HttpResponseRedirect("/index")
+        return HttpResponseRedirect("/")
     return render(request, "edit.html", context={"edit": task})
 
 
@@ -81,35 +61,46 @@ def delete(request, num=1):
     task = Task.objects.get(id=num)
     task.delete()
 
-    return HttpResponseRedirect("/index")
+    return HttpResponseRedirect("/")
 
 
+@csrf_exempt
 def register(requset):
-    users = UserLogin()
-    if requset.method == "POST":
-        users = UserLogin(requset.POST)
-        if users.is_valid():
-            usernameAdd = users.cleaned_data['usernameAdd']
-            passwordAdd = users.cleaned_data['passwordAdd']
-            value_for_update = {"username": usernameAdd, "password": passwordAdd}
+    result = {'form': UserCreationForm()}
+    if requset.POST:
+        newUser = UserCreationForm(requset.POST)
+        if newUser.is_valid():
+            newUser.save()
+            newUser = auth.authenticate(username=newUser.cleaned_data['username'],
+                                        password=newUser.cleaned_data['password2'])
+            auth.login(requset, newUser)
+            return HttpResponseRedirect('/')
+        else:
+            result['form'] = newUser
+    return render(requset, 'register.html', result)
 
-            # добавление нового пользователя в БД
-            newUser = Users.objects.update_or_create(defaults=value_for_update, id=None)
-            return HttpResponseRedirect("/index")
-    return render(requset, "register.html", {"register": users})
 
-
+@csrf_exempt
 def entry(request):
-    if request.method == "POST":
-        # Получаем с фронта данные на бэк
-        login = request.POST.get('login')
+    result = {}
+
+    if request.POST:
+        username = request.POST.get('username')
         password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
 
-        try:
-            user = Users.objects.get(username=login, password=password)
-            return HttpResponseRedirect('/index')
-        # если данных в БД нет то редирект на вход
-        except BaseException:
-            return HttpResponseRedirect('/entry')
+        if user is not None:
+            auth.login(request, user)
+            return render(request, 'index.html', {'username': username})
 
-    return render(request, "entry.html")
+        else:
+            login_error = "Пользователь не найден"
+            return render(request, 'entry.html', {'login_error': login_error})
+
+    else:
+        return render(request, "entry.html", result)
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect('/')
