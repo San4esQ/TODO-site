@@ -5,13 +5,15 @@
     <title>Регистрация</title>
 </head>
 <body>
-    <form method="POST">
-        {% csrf_token %}
-    <h3>Регистрация</h3>
-        <table>
-            {{register}}
-        </table>
-        <input type = "submit" value="Зарегистрироваться">
-        </form>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+        <h3>Регистрация</h3>
+            <table>
+                {{form}}
+            </table>
+            <input class="button" type = "submit" value="Зарегистрироваться">
+            </form>
+    </div>
 </body>
 </html>

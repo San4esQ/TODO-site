@@ -9,13 +9,22 @@
 
 <!-- Шапка-->
 <header>
-    <h1>Список задач</h1>
 </header>
 
 <!--Контент страницы -->
 <body>
-
-
+<div>
+    <section>
+            <ul>
+            {% if username %}
+                <li><a href="/auth/logout">Выйти({{username}})</a></li>
+            {% else %}
+                <li><a href="/auth/login">Войти</a></li>
+            {% endif %}
+            </ul>
+    </section>
+</div>
+    <h1>Список задач</h1>
 <div class="content">
     {% for date, task in tasks.items %}
     <div>
@@ -29,7 +38,6 @@
 
 </body>
 <a href="/add">Добавить</a>
-<a href="/entry">Выход</a>
 <!-- Подвал-->
 <footer>Здесь могла бы быть ваша реклама</footer>
 </html>
