@@ -7,7 +7,8 @@ from firstapp.models import Task
 from .forms import UserTask
 from django.contrib.auth import authenticate
 
-
+# При входе в url остается /auth/login, а должно в '/'
+# при добавлении задачи выходит с сесии
 def index(request):
     tasks = Task.objects.all()
 
