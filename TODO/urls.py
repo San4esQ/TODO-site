@@ -5,11 +5,11 @@ from django.contrib import admin
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/register/', views.register),
-    path('', views.index),
-    path('auth/login/', views.entry),
+    path('', views.entry),
     path('auth/logout/', views.logout),
+    path('index/', views.index),
     path('add/', views.add),
-    path('<int:num>', views.detail),
-    path('edit/<int:num>', views.edit),
-    path('delete/<int:num>', views.delete),
+    path('index/<int:num>', views.detail),
+    path('index/edit/<int:num>', views.edit),
+    path('index/delete/<int:num>', views.delete),
 ]

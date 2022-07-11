@@ -36,7 +36,7 @@ def add(request):
 
             # добавление новой задачи даты и время
             newTask = Task.objects.update_or_create(defaults=value_for_update, id=None)
-            return HttpResponseRedirect("/")
+            return HttpResponseRedirect("/index")
 
     return render(request, "add.html", {"form": userTask})
 
@@ -53,7 +53,7 @@ def edit(request, num=1):
         task.time = request.POST.get("time")
         task.title = request.POST.get("title")
         task.save()
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect("/index")
     return render(request, "edit.html", context={"edit": task})
 
 
@@ -61,20 +61,23 @@ def delete(request, num=1):
     task = Task.objects.get(id=num)
     task.delete()
 
-    return HttpResponseRedirect("/")
+    return HttpResponseRedirect("/index")
 
 
 @csrf_exempt
 def register(requset):
     result = {'form': UserCreationForm()}
+
     if requset.POST:
         newUser = UserCreationForm(requset.POST)
+
         if newUser.is_valid():
             newUser.save()
             newUser = auth.authenticate(username=newUser.cleaned_data['username'],
                                         password=newUser.cleaned_data['password2'])
             auth.login(requset, newUser)
             return HttpResponseRedirect('/')
+
         else:
             result['form'] = newUser
     return render(requset, 'register.html', result)
@@ -91,7 +94,7 @@ def entry(request):
 
         if user is not None:
             auth.login(request, user)
-            return render(request, 'index.html', {'username': username})
+            return HttpResponseRedirect('/index')
 
         else:
             login_error = "Пользователь не найден"

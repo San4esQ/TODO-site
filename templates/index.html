@@ -13,17 +13,7 @@
 
 <!--Контент страницы -->
 <body>
-<div>
-    <section>
-            <ul>
-            {% if username %}
-                <li><a href="/auth/logout">Выйти({{username}})</a></li>
-            {% else %}
-                <li><a href="/auth/login">Войти</a></li>
-            {% endif %}
-            </ul>
-    </section>
-</div>
+<a href="/auth/logout">Выйти</a>
     <h1>Список задач</h1>
 <div class="content">
     {% for date, task in tasks.items %}
