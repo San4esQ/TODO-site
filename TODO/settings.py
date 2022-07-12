@@ -119,6 +119,16 @@ USE_I18N = True
 
 USE_TZ = True
 
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y',
+    '%Y-%m-%d',
+    '%m/%d/%Y',
+    '%d-%m-%Y',
+    '%d.%m.%Y',
+    '%m.%d.%Y',
+    '%Y.%m.%d',
+    '%Y/%m/%d',
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
