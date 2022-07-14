@@ -9,7 +9,8 @@ from django.contrib.auth import authenticate
 
 
 def index(request):
-    tasks = Task.objects.all()
+    current_user = request.user
+    tasks = Task.objects.filter(user=current_user)
 
     result = {}
 
@@ -34,8 +35,12 @@ def add(request):
             # значения для добавления взятые выше
             value_for_update = {"title": taskAdd, "date": dateAdd, "time": timeAdd}
 
+            # получаем ид пользователя
+            current_user = request.user
+
             # добавление новой задачи даты и время
-            newTask = Task.objects.update_or_create(defaults=value_for_update, id=None)
+            newTask = Task.objects.update_or_create(defaults=value_for_update, id=None, user_id=current_user.id)
+
             return HttpResponseRedirect("/index")
 
     return render(request, "add.html", {"form": userTask})
