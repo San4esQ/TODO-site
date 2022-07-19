@@ -6,18 +6,13 @@ from django.views.decorators.csrf import csrf_exempt
 from firstapp.models import Task
 from .forms import UserTask
 from django.contrib.auth import authenticate
+from .service import TaskService
 
 
 def index(request):
-    current_user = request.user
-    tasks = Task.objects.filter(user=current_user)
+    indexTask = TaskService.Index()
 
-    result = {}
-
-    for task in tasks:
-        key = task.date
-
-        result.setdefault(key, []).append(task)
+    result = indexTask.index(request)
 
     return render(request, "index.html", context={"tasks": result})
 
