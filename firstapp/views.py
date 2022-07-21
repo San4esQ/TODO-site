@@ -61,7 +61,7 @@ def register(request):
             newUser.save()
             newUser = auth.authenticate(username=newUser.cleaned_data['username'],
                                         password=newUser.cleaned_data['password2'])
-            auth.login(requset, newUser)
+            auth.login(request, newUser)
             return HttpResponseRedirect('/')
 
         else:
