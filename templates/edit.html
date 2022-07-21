@@ -9,7 +9,8 @@
         {% csrf_token %}
         <h3>Изменение задачи: {{edit.title}}</h3>
         <table>
-            Введите дату:
+            Введите дату
+            (Формат:Год-Месяц-День):
             <input type = "text" name = "date" value="{{task.date}}">
 
             Введите время:
