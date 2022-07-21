@@ -4,9 +4,8 @@ from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
 from django.views.decorators.csrf import csrf_exempt
 from firstapp.models import Task
-from .forms import UserTask
 from django.contrib.auth import authenticate
-from .service import TaskService
+from .service import TaskService, AddService, EditService
 
 
 def index(request):
@@ -18,23 +17,11 @@ def index(request):
 
 
 def add(request):
-    userTask = UserTask()
+    addTask = AddService.Add()
+    userTask = addTask.add(request)
 
     if request.method == "POST":
-        userTask = UserTask(request.POST)
         if userTask.is_valid():
-            dateAdd = userTask.cleaned_data["dateAdd"]
-            timeAdd = userTask.cleaned_data["timeAdd"]
-            taskAdd = userTask.cleaned_data["taskAdd"]
-
-            # значения для добавления взятые выше
-            value_for_update = {"title": taskAdd, "date": dateAdd, "time": timeAdd}
-
-            # получаем ид пользователя
-            current_user = request.user
-
-            # добавление новой задачи даты и время
-            newTask = Task.objects.update_or_create(defaults=value_for_update, id=None, user_id=current_user.id)
 
             return HttpResponseRedirect("/index")
 
@@ -47,14 +34,13 @@ def detail(request, num=1):
 
 
 def edit(request, num=1):
-    task = Task.objects.get(id=num)
+    editTask = EditService.Edit()
+    change = editTask.edit(request, num)
+
     if request.method == "POST":
-        task.date = request.POST.get("date")
-        task.time = request.POST.get("time")
-        task.title = request.POST.get("title")
-        task.save()
         return HttpResponseRedirect("/index")
-    return render(request, "edit.html", context={"edit": task})
+
+    return render(request, "edit.html", context={"edit": change})
 
 
 def delete(request, num=1):
@@ -65,11 +51,11 @@ def delete(request, num=1):
 
 
 @csrf_exempt
-def register(requset):
+def register(request):
     result = {'form': UserCreationForm()}
 
-    if requset.POST:
-        newUser = UserCreationForm(requset.POST)
+    if request.POST:
+        newUser = UserCreationForm(request.POST)
 
         if newUser.is_valid():
             newUser.save()
@@ -80,7 +66,7 @@ def register(requset):
 
         else:
             result['form'] = newUser
-    return render(requset, 'register.html', result)
+    return render(request, 'register.html', result)
 
 
 @csrf_exempt
