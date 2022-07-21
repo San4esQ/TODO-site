@@ -1,6 +1,5 @@
 # TODO-site
 * Database: MySQL
-
 * Framework: Django
 
 # Download:
