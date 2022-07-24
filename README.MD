@@ -7,4 +7,4 @@
 
 # How to run
 * py manage.py runserver
-* http://localhost:8000/
+* http://localhost:8000
